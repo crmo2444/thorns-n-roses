@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { getNurseryFlowerDetails } from "../ApiManager"
+import { useNavigate, useParams } from "react-router-dom"
+import { getNurseryFlowers } from "../ApiManager"
 
 export const NurseryDetails = () => {
     //only displays when route = nursery/:nurseryId (some number)
@@ -9,14 +9,15 @@ export const NurseryDetails = () => {
     const [nurseryObj, setNurseryObj] = useState([])
     const [distributorNurseries, setDistributorNurseries] = useState([])
     const [filteredDistributors, setFiltered] = useState([])
+    const [editButton, editButtonState] = useState(false)
+    const [nurseryFlowerId, setNurseryFlowerId] = useState(0)
+    const [newNurseryFlower, updateNurseryFlower] = useState({})
+
+    let navigate = useNavigate()
     
     useEffect(
         () => {
-            fetch(`http://localhost:8088/nurseryFlowers?_expand=flower&nurseryId=${nurseryId}`)
-                .then(response => response.json())
-                .then((data) => {
-                    setNurseryFlowers(data)
-                })
+            getNurseryFlowers(nurseryId, setNurseryFlowers)
         },
         []
     )
@@ -53,6 +54,23 @@ export const NurseryDetails = () => {
         [distributorNurseries]
     )
 
+    const handleSaveButtonClick = (event) => {
+        event.preventDefault()
+
+         fetch(`http://localhost:8088/nurseryFlowers/${nurseryFlowerId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newNurseryFlower)
+        })
+            .then(response => response.json())
+            .then(() => {
+                getNurseryFlowers(nurseryId, setNurseryFlowers)
+                navigate(`/nurseries/${nurseryId}`)
+            }) 
+    }
+
 
     return <> 
         <h2>{nurseryObj[0]?.nursery?.name} Details</h2>
@@ -62,8 +80,44 @@ export const NurseryDetails = () => {
             <section className="nursery">
                 <header className="nursery__header" key={nurseryId}>{nurseryFlower?.flower?.species}</header>
                 <div>Color: {nurseryFlower?.flower?.color}</div>
-                <div>Price: {nurseryFlower.price}</div>
-            </section> 
+                { editButton ? <>
+                    { nurseryFlowerId === nurseryFlower.id ? <>
+                        <form className="editPrice">
+                                <fieldset>
+                                    <div className="form-group">
+                                    <label htmlFor="price">Price: </label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        onChange={
+                                            (event) => {
+                                                let foundFlower = nurseryFlowers.find(flower => nurseryFlowerId === flower.id)
+                                                const copy = {...foundFlower}
+                                                copy.price = parseFloat(event.target.value)
+                                                console.log(copy)
+                                                updateNurseryFlower(copy)
+                                            }
+                            } />
+                                    </div>
+                                </fieldset>
+                        </form>
+                        <button
+                            onClick={(clickEvent) =>  {
+                                handleSaveButtonClick(clickEvent)
+                                editButtonState(false)
+                            }}
+                            className="btn btn-primary">
+                            Save
+                    </button></> : 
+                        <div>Price: {nurseryFlower.price}<button onClick={() => {
+                            editButtonState(true)
+                            setNurseryFlowerId(nurseryFlower.id)}}>Change Price</button></div>  }</> : <>
+                        <div>Price: {nurseryFlower.price}</div>
+                        <button onClick={() => {
+                            editButtonState(true)
+                            setNurseryFlowerId(nurseryFlower.id)}}>Change Price</button> 
+                        </>}
+                </section> 
                 </>
             })}
         <h4>Distributors</h4>
