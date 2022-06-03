@@ -73,7 +73,7 @@ export const NurseryDetails = () => {
 
 
     return <> 
-        <h2>{nurseryObj[0]?.nursery?.name} Details</h2>
+        <h2>{nurseryObj[0]?.nursery?.name} Nursery</h2>
         <h4>Flowers</h4>
         { nurseryFlowers.map(nurseryFlower => {
             return <>

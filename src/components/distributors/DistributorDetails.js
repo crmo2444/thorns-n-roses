@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { getAllDistributors, getAllNurseries, getCurrentDistributorArray, getDistributorFlowers, getDistributorRetailers } from "../ApiManager"
 
 export const DistributorDetails = () => {
@@ -28,13 +28,13 @@ export const DistributorDetails = () => {
     )
 
     return <> 
-        <h2>{currentDistributor[0]?.distributor?.name} Details</h2>
+        <h2>{currentDistributor[0]?.distributor?.name} Distributor</h2>
         <h4>Flowers</h4>
         { distributorFlowers.map(distributorFlower => {
             let foundNursery = nurseries.find(nursery => distributorFlower?.nurseryFlower?.nurseryId === nursery.id)
             return <>
             <section className="distributor">
-                <header className="distributor__header" key={distributorId}>{distributorFlower?.nurseryFlower?.flower?.species} from {foundNursery.name}</header>
+                <header className="distributor__header" key={distributorId}>{distributorFlower?.nurseryFlower?.flower?.species} from <Link to={`/nurseries/${foundNursery.id}`}>{foundNursery.name}</Link></header>
                 <div>Color: {distributorFlower?.nurseryFlower?.flower?.color}</div>
                 <div>Price: {((distributorFlower?.nurseryFlower?.price) * (currentDistributor[0]?.distributor?.priceMarkup)).toLocaleString('en-US', {style:'currency', currency:'USD'})}</div>
                 <div>Price Markup: {(parseFloat(currentDistributor[0]?.distributor?.priceMarkup - 1).toFixed(2)) * 100}%</div>
@@ -42,7 +42,7 @@ export const DistributorDetails = () => {
         })}
         <h4>Retailers</h4>
             <section className="distributor">
-                <header className="distributor__header">{retailer[0]?.name}</header>
+                <header className="distributor__header"><Link to={`/retailers/${retailer[0]?.id}`}>{retailer[0]?.name}</Link></header>
                 <div>Address: {retailer[0]?.address}</div>
             </section>
         </>
