@@ -18,7 +18,6 @@ export const DistributorsList = () => {
             distributors.map(distributor => <Distributor key={`distributor--${distributor.id}`}  
                 id={distributor.id} 
                 name={distributor.name}
-                price={distributor.priceMarkup} 
             />)
         }
     </article>

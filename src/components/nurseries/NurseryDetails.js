@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { getNurseryFlowers } from "../ApiManager"
 
 export const NurseryDetails = () => {
@@ -124,7 +124,7 @@ export const NurseryDetails = () => {
         { filteredDistributors.map(distributorObj => {
             return <>
             <section className="nursery">
-                <header className="nursery__header">{distributorObj?.distributor?.name}</header>
+                <header className="nursery__header"><Link to={`/distributors/${distributorObj.distributorId}`} >{distributorObj?.distributor?.name}</Link></header>
             </section>
             </>
         })}

@@ -4,6 +4,7 @@ import { DistributorDetails } from "../distributors/DistributorDetails"
 import { DistributorsList } from "../distributors/DistributorsList"
 import { NurseriesList } from "../nurseries/NurseriesList"
 import { NurseryDetails } from "../nurseries/NurseryDetails"
+import { RetailerDetails } from "../retailers/RetailerDetails"
 import { RetailersList } from "../retailers/RetailersList"
 
 export const ApplicationViews = () => {
@@ -18,10 +19,11 @@ export const ApplicationViews = () => {
             }>
 
                 <Route path="nurseries" element={ <NurseriesList /> } />
+                <Route path="nurseries/:nurseryId" element={ <NurseryDetails /> } />
                 <Route path="distributors" element={ <DistributorsList /> } />
                 <Route path="distributors/:distributorId" element={ <DistributorDetails /> } />
                 <Route path="retailers" element={ <RetailersList /> } />
-                <Route path="nurseries/:nurseryId" element={ <NurseryDetails /> } />
+                <Route path="retailers/:retailerId" element={ <RetailerDetails /> } />
             </Route>
         </Routes>
     )

@@ -22,6 +22,22 @@ export const getAllDistributors = (setDistributors) => {
             })
 }
 
+export const getAllRetailers = (setRetailers) => {
+    return fetch(`http://localhost:8088/retailers`)
+            .then(response => response.json())
+            .then((RetailersArray) => {
+                setRetailers(RetailersArray)
+            })
+}
+
+export const getCurrentRetailer = (id, setCurrentRetailer) => {
+    return fetch(`http://localhost:8088/retailers?_expand=distributor&id=${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                setCurrentRetailer(data)
+            })
+}
+
 export const getDistributorFlowers = (id, setDistributorFlowers) => {
     return fetch(`http://localhost:8088/distributorNurseries?_expand=nurseryFlower&distributorId=${id}`)
                 .then(response => response.json())
