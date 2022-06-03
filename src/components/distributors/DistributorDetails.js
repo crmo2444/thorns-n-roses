@@ -10,6 +10,9 @@ export const DistributorDetails = () => {
     const [nurseries, setNurseries] = useState({})
     const [retailer, setDistributorRetailers] = useState({})
 
+    const localThornsUser = localStorage.getItem("thorns_user")
+    const thornsUserObject = JSON.parse(localThornsUser)
+
     useEffect(
         () => {
             getAllDistributors(setDistributors)

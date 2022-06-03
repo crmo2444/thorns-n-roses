@@ -14,6 +14,10 @@ export const NurseryDetails = () => {
     const [newNurseryFlower, updateNurseryFlower] = useState({})
 
     let navigate = useNavigate()
+
+    const localThornsUser = localStorage.getItem("thorns_user")
+    const thornsUserObject = JSON.parse(localThornsUser)
+
     
     useEffect(
         () => {
@@ -80,6 +84,7 @@ export const NurseryDetails = () => {
             <section className="nursery">
                 <header className="nursery__header" key={nurseryId}>{nurseryFlower?.flower?.species}</header>
                 <div>Color: {nurseryFlower?.flower?.color}</div>
+            { thornsUserObject.staff === false ? <div>Price: ${nurseryFlower.price}</div> : <>
                 { editButton ? <>
                     { nurseryFlowerId === nurseryFlower.id ? <>
                         <form className="editPrice">
@@ -116,7 +121,7 @@ export const NurseryDetails = () => {
                         <button onClick={() => {
                             editButtonState(true)
                             setNurseryFlowerId(nurseryFlower.id)}}>Change Price</button> 
-                        </>}
+                        </>}</>}
                 </section> 
                 </>
             })}

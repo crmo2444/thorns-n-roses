@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getAllDistributors, getAllNurseries, getCurrentRetailer, getDistributorFlowers } from "../ApiManager"
+import { Purchase } from "../purchases/Purchase"
 
 export const RetailerDetails = () => {
     const [flowers, setDistributorFlowers] = useState([])
@@ -10,6 +11,9 @@ export const RetailerDetails = () => {
     const [nurseries, setNurseries] = useState([])
     const [filteredDistributors, setFiltered] = useState([])
     const [filteredNurseries, setFilteredNurseries] = useState([])
+
+    const localThornsUser = localStorage.getItem("thorns_user")
+    const thornsUserObject = JSON.parse(localThornsUser)
 
     useEffect(
         () => {
@@ -42,7 +46,6 @@ export const RetailerDetails = () => {
                 nurseries.map(nursery => {
                     if(nursery.id === flower?.nurseryFlower?.nurseryId) {
                         filteredSet.add(nursery)
-                        console.log(filteredSet)
                     }
                 })
                 let filteredArray = [...filteredSet]
@@ -62,7 +65,11 @@ export const RetailerDetails = () => {
                 <header className="retailer__header">{flower?.nurseryFlower?.flower?.species} from <Link to={`/distributors/${foundDistributor.id}`}>{foundDistributor.name}</Link></header>
                 <div>Color: {flower?.nurseryFlower?.flower?.color}</div>
                 <div>Price: {((flower?.nurseryFlower?.price) * (currentRetailer[0]?.priceMarkup) * (foundDistributor.priceMarkup)).toLocaleString('en-US', {style:'currency', currency:'USD'})}</div>
-                <div>Price Markup: {parseInt((currentRetailer[0].priceMarkup - 1) * 100)}%</div>
+                { thornsUserObject.staff ? <div>Price Markup: {parseInt((currentRetailer[0].priceMarkup - 1) * 100)}%</div> :
+                    <Purchase id={thornsUserObject.id} 
+                    flowerId={flower.id}
+                    price={((flower?.nurseryFlower?.price) * (currentRetailer[0]?.priceMarkup) * (foundDistributor.priceMarkup))}
+                    retailer={currentRetailer[0].name}/>}
             </section></>
         })}
     <h2>Distributors</h2>

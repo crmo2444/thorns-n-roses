@@ -14,6 +14,14 @@ export const getNurseryFlowers = (id, setNurseryFlowers) => {
                 })
 }
 
+export const getNurseryFlowersOnly = (setNurseryFlowers) => {
+    return fetch(`http://localhost:8088/nurseryFlowers?_expand=flower`)
+                .then(response => response.json())
+                .then((data) => {
+                    setNurseryFlowers(data)
+                })
+}
+
 export const getAllDistributors = (setDistributors) => {
     return fetch(`http://localhost:8088/distributors`)
             .then(response => response.json())
@@ -22,11 +30,27 @@ export const getAllDistributors = (setDistributors) => {
             })
 }
 
+export const getAllPurchases = (setPurchases) => {
+    return fetch(`http://localhost:8088/purchases?_expand=distributorNursery`)
+            .then(response => response.json())
+            .then((data) => {
+                setPurchases(data)
+            })
+}
+
 export const getAllRetailers = (setRetailers) => {
     return fetch(`http://localhost:8088/retailers`)
             .then(response => response.json())
-            .then((RetailersArray) => {
-                setRetailers(RetailersArray)
+            .then((data) => {
+                setRetailers(data)
+            })
+}
+
+export const getAllUsers = (setUserList) => {
+    return fetch(`http://localhost:8088/users`)
+            .then(response => response.json())
+            .then((data) => {
+                setUserList(data)
             })
 }
 
@@ -60,4 +84,28 @@ export const getDistributorRetailers = (id, setDistributorRetailers) => {
                 .then((data) => {
                     setDistributorRetailers(data)
                 })
+}
+
+export const savePurchase = (newPurchase, setFeedback) => {
+    return fetch('http://localhost:8088/purchases', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newPurchase)
+        })
+            .then(response => response.json())
+            .then(() => {
+                setFeedback("Product purchased!")
+            })
+}
+
+export const getUsersAndCurrent = (setUserList, setCurrentUser, thornUserObject) => {
+    return fetch(`http://localhost:8088/users`)
+            .then(response => response.json())
+            .then((usersArray) => {
+                setUserList(usersArray)
+                let currentUser = usersArray.find(user => thornUserObject.id === user.id)   
+                setCurrentUser(currentUser) 
+            })
 }
