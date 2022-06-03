@@ -6,8 +6,6 @@ import "./Nursery.css"
 export const NurseriesList = () => {
 
     const [nurseries, setNurseries] = useState([])
-    const [flowers, setFlowers] = useState([])
-    const [nurseryFlowers, setNurseryFlowers] = useState([])
 
     useEffect(
         () => {

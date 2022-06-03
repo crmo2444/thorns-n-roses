@@ -1,0 +1,25 @@
+
+.distributors {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.distributor {
+    background-color: lightskyblue;
+    border: 2px dotted rgb(30, 74, 92);
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.distributor__header {
+    font-size: larger;
+    font-weight: 700;
+    line-height: 3rem;
+}
+
+.distributor__footer {
+    margin: 1rem 0 0.25rem 0;
+    font-style: oblique;
+}
